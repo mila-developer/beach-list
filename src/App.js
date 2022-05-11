@@ -36,7 +36,6 @@ const App = (props) => {
       <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
     Ok
       </Button>} placeholder="Digite o item" />
-    <Text>{displayItems.length}</Text>
     <VStack space={4}>
     {
 
