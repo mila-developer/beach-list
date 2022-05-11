@@ -15,21 +15,16 @@ const beachItems = [
   "Água",
   "Óculos escuro",
   "Fones de ouvido",
-];  
+];
 
 const App = (props) => {
   const [inputText, setInputText] = useState('');
   const [displayItems, setDisplayItems] = useState([]);
-  useEffect(() => {
 
-     
-
-  }, [displayItems]);
-  const handleClick = () => {
-    console.log("inputText = " +inputText);
-    displayItems.push(inputText);
-    console.log("displayItems = " +displayItems);
-    setDisplayItems(displayItems);
+  function handleClick(){
+    let newDisplayItens = [...displayItems]
+    newDisplayItens.push(inputText)
+    setDisplayItems(newDisplayItens);
   }
   const handleChange = text => setInputText(text);
 
@@ -41,8 +36,10 @@ const App = (props) => {
       <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
     Ok
       </Button>} placeholder="Digite o item" />
+    <Text>{displayItems.length}</Text>
     <VStack space={4}>
     {
+
       displayItems.map(item => {
         return (
         <HStack space={3}>
