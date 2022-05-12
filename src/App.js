@@ -1,6 +1,6 @@
 import { Box, NativeBaseProvider, Text } from "native-base";
-import React, {useContext, useEffect, useState} from 'react';
-import { HStack, VStack, Center, Checkbox, Input, Button } from "native-base";
+import React, {useContext, useEffect, useState, useId} from 'react';
+import { HStack, VStack, Center, Checkbox, Input, Button, DeleteIcon } from "native-base";
 
 const LinearGradient = require("expo-linear-gradient").LinearGradient;
 const config = {
@@ -20,10 +20,17 @@ const beachItems = [
 const App = (props) => {
   const [inputText, setInputText] = useState('');
   const [displayItems, setDisplayItems] = useState([]);
+  let id = 0;
 
   function handleClick(){
     let newDisplayItens = [...displayItems]
-    newDisplayItens.push(inputText)
+    let item = {
+      id: id,
+      name: inputText
+    }
+    console.log(id);
+    newDisplayItens.push(item)
+    id ++;
     setDisplayItems(newDisplayItens);
   }
   const handleChange = text => setInputText(text);
@@ -51,7 +58,7 @@ const App = (props) => {
           <HStack space={3}>
             <Checkbox value="test">
             </Checkbox>
-            <Text color="white">{item}</Text>
+            <Text color="white">{item.name}</Text> <DeleteIcon color="primary.50" />
           </HStack>
         );
         })
