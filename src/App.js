@@ -1,6 +1,6 @@
 import { Box, NativeBaseProvider, Text } from "native-base";
-import React, {useContext, useEffect, useState, useId} from 'react';
-import { HStack, VStack, Center, Checkbox, Input, Button, DeleteIcon } from "native-base";
+import React, {useContext, useEffect, useState} from 'react';
+import { HStack, VStack, Center, Checkbox, Input, Button, DeleteIcon, Pressable } from "native-base";
 
 const LinearGradient = require("expo-linear-gradient").LinearGradient;
 const config = {
@@ -20,19 +20,49 @@ const beachItems = [
 const App = (props) => {
   const [inputText, setInputText] = useState('');
   const [displayItems, setDisplayItems] = useState([]);
-  let id = 0;
+  const [displayId, setDisplayId] = useState(0);
 
   function handleClick(){
     let newDisplayItens = [...displayItems]
     let item = {
-      id: id,
-      name: inputText
+      id: displayId,
+      name: inputText,
+      strike: false,
     }
-    console.log(id);
+    console.log("id = " +displayId);
     newDisplayItens.push(item)
-    id ++;
+    setDisplayId(displayId+1);
     setDisplayItems(newDisplayItens);
   }
+
+  function itemDelete(id) {
+    console.log("deletando id..." +id);
+    let newDisplayItens = []
+    displayItems.map(item => {
+      if(item.id != id) {
+        newDisplayItens.push(item)
+      }
+    })
+    console.log(newDisplayItens)
+    setDisplayItems(newDisplayItens)
+  }
+
+  function strikeItem(id) {
+    let newStrikeItem = []
+    displayItems.map(item => {
+      if(item.id != id) {
+        newStrikeItem.push(item)
+      }
+      else {
+        let newItem = {...item};
+        newItem.strike = !newItem.strike;
+        newStrikeItem.push(newItem);
+      }
+    })
+    console.log(newStrikeItem)
+    setDisplayItems(newStrikeItem)
+  }
+
   const handleChange = text => setInputText(text);
 
   return <NativeBaseProvider config={config}>
@@ -55,10 +85,13 @@ const App = (props) => {
 
         displayItems.map(item => {
           return (
-          <HStack space={3}>
-            <Checkbox value="test">
+          <HStack key={item.id} space={3}>
+            <Checkbox onChange={() => strikeItem(item.id)} value="test">
             </Checkbox>
-            <Text color="white">{item.name}</Text> <DeleteIcon color="primary.50" />
+            <Text strikeThrough = {item.strike} color="white">{item.name}</Text>  
+            <Pressable onPress={() => itemDelete(item.id)}>
+              <DeleteIcon color="primary.50" />
+            </Pressable>
           </HStack>
         );
         })
