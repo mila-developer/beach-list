@@ -8,14 +8,6 @@ const config = {
     "linear-gradient": LinearGradient
   }
 };
-const beachItems = [
-  "Protetor solar",
-  "Carteira",
-  "Toalha",
-  "Água",
-  "Óculos escuro",
-  "Fones de ouvido",
-];
 
 const App = (props) => {
   const [inputText, setInputText] = useState('');
