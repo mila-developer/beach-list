@@ -1,7 +1,9 @@
-import { Box, NativeBaseProvider, Text } from "native-base";
-import React, {useContext, useEffect, useState} from 'react';
+import { Box, NativeBaseProvider, Text } from "native-base"; //Components native base
+import React, {useContext, useEffect, useState} from 'react'; //Hooks
 import { HStack, VStack, Center, Checkbox, Input, Button, DeleteIcon, Pressable } from "native-base";
+import axios from 'axios';
 
+// importando a lib expo-linear-gradient
 const LinearGradient = require("expo-linear-gradient").LinearGradient;
 const config = {
   dependencies: {
@@ -10,9 +12,22 @@ const config = {
 };
 
 const App = (props) => {
-  const [inputText, setInputText] = useState('');
-  const [displayItems, setDisplayItems] = useState([]);
-  const [displayId, setDisplayId] = useState(0);
+  // utilizando o hook useSate
+  const [inputText, setInputText] = useState(''); // inicializa com string vazia
+  // useState recebe como parametro o valor inicial do estado
+  // os dois outros parametros (inputText e setInputText) são respectivamente o nome do atributo e a função
+  // para atualizá-lo.
+  const [displayItems, setDisplayItems] = useState([]); // inicializa com array vazio
+  const [displayId, setDisplayId] = useState(0); //inicializa com 0
+
+  axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+  useEffect( () => {
+    axios.get("http://localhost:8080/beach-api/")
+      .then(res => {
+        console.log(res);
+        console.log(res.data);
+      })
+  }, []);
 
   function handleClick(){
     let newDisplayItens = [...displayItems]
@@ -57,6 +72,10 @@ const App = (props) => {
 
   const handleChange = text => setInputText(text);
 
+  // Components
+
+  // Provider prover um modo de passar dados através de componentes 
+  // sem a necessidade de passar dados manualmente para seus filhos
   return <NativeBaseProvider config={config}>
   <Box w="100vw" h="100vh" bg={{
     linearGradient: {
@@ -71,7 +90,7 @@ const App = (props) => {
       InputRightElement={
         <Button size="xs" rounded="none" w="1/6" h="full" onPress={handleClick}>
       Ok
-        </Button>} color="white" placeholder="Insert your item" />
+        </Button>} color="white"  placeholderTextColor="silver" placeholder="Insert your item" />
       <VStack space={4}>
       {
 
