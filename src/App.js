@@ -26,6 +26,7 @@ const App = (props) => {
       .then(res => {
         console.log(res);
         console.log(res.data);
+        setDisplayItems(res.data);
       })
   }, []);
 
