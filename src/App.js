@@ -1,6 +1,6 @@
 import { Box, NativeBaseProvider, Text } from "native-base"; //Components native base
 import React, {useContext, useEffect, useState} from 'react'; //Hooks
-import { HStack, VStack, Center, Checkbox, Input, Button, DeleteIcon, Pressable } from "native-base";
+import { HStack, VStack, Center, Checkbox, Input, Button, DeleteIcon, Pressable, Spinner } from "native-base";
 import axios from 'axios';
 
 // importando a lib expo-linear-gradient
@@ -24,8 +24,6 @@ const App = (props) => {
   useEffect( () => {
     axios.get("http://localhost:8080/beach-api/")
       .then(res => {
-        console.log(res);
-        console.log(res.data);
         setDisplayItems(res.data);
       })
   }, []);
@@ -37,6 +35,7 @@ const App = (props) => {
       name: inputText,
       strike: false,
     }
+    axios.post("http://localhost:8080/beach-api/insert", item)
     console.log("id = " +displayId);
     newDisplayItens.push(item)
     setDisplayId(displayId+1);
@@ -44,6 +43,7 @@ const App = (props) => {
   }
 
   function itemDelete(id) {
+    axios.delete("http://localhost:8080/beach-api/delete/" +id)
     console.log("deletando id..." +id);
     let newDisplayItens = []
     displayItems.map(item => {
@@ -65,6 +65,10 @@ const App = (props) => {
         let newItem = {...item};
         newItem.strike = !newItem.strike;
         newStrikeItem.push(newItem);
+
+        axios.post("http://localhost:8080/beach-api/update", newItem)
+      .then(res => {
+      })
       }
     })
     console.log(newStrikeItem)
@@ -85,7 +89,8 @@ const App = (props) => {
       end: [1, 0]
     }  
   }}>
-    <Center>
+  <Spinner color="cyan.500" />
+  <Center>
       <Text fontSize="6xl" color="white">Beach List</Text>
       <Input w="75%" maxW="300px" mb="3" py="0" onChangeText={handleChange}
       InputRightElement={
